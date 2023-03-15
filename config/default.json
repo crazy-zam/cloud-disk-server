@@ -1,7 +1,5 @@
 {
   "serverPort": 5000,
   "dbUrl": "mongodb+srv://crazy-zam:ZGiCp74O7wi6agmP@cloud.7v0uyqu.mongodb.net/?retryWrites=true&w=majority",
-  "secretKey": "my_secret_key",
-  "filePath": "C:\\JS\\Projects\\data-storage\\server\\files",
-  "staticPath": "C:\\JS\\Projects\\data-storage\\server\\static"
+  "secretKey": "my_secret_key"
 }
