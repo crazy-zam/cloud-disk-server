@@ -1,5 +1,0 @@
-{
-  "serverPort": 5000,
-  "dbUrl": "mongodb+srv://crazy-zam:ZGiCp74O7wi6agmP@cloud.7v0uyqu.mongodb.net/?retryWrites=true&w=majority",
-  "secretKey": "my_secret_key"
-}
