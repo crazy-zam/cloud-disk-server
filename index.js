@@ -13,7 +13,8 @@ const path = require('path');
 
 app.use(fileUpload({ defCharset: 'utf8', defParamCharset: 'utf8' }));
 app.use(cors());
-app.use(filePathMiddleware(path.resolve(__dirname, 'files')));
+app.use(filePathMiddleware(path.resolve(__dirname)));
+// app.use(filePathMiddleware(path.resolve(__dirname, 'files')));
 app.use(express.static('static'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
