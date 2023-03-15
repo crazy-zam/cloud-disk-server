@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 const fs = require('fs');
 const User = require('../models/User.js');
 const fileService = require('../services/fileService');
@@ -38,7 +37,7 @@ class AuthController {
       if (!isPassValid) {
         return res.status(400).json({ message: 'Wrong password' });
       }
-      const token = jwt.sign({ id: user.id }, config.get('secretKey'), {
+      const token = jwt.sign({ id: user.id }, process.env.secretKey, {
         expiresIn: '1h',
       });
       return res.json({
@@ -59,7 +58,7 @@ class AuthController {
   async authUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.user.id });
-      const token = jwt.sign({ id: user.id }, config.get('secretKey'), {
+      const token = jwt.sign({ id: user.id }, process.env.secretKey, {
         expiresIn: '1h',
       });
       return res.json({
@@ -81,7 +80,7 @@ class AuthController {
     try {
       await User.deleteOne({ _id: req.user.id });
       await File.deleteMany({ user: req.user.id });
-      fs.rmSync(config.get('filePath') + '//' + req.user.id, {
+      fs.rmSync(req.filePath + '//files//' + req.user.id, {
         recursive: true,
       });
       res.status(200).json({ message: 'User was deleted' });

@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const File = require('../models/File');
 const fileService = require('../services/fileService');
-const config = require('config');
+
 const fs = require('fs');
 const Uuid = require('uuid');
 
