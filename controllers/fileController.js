@@ -105,7 +105,7 @@ class FileController {
       await dbFile.save();
       await user.save();
 
-      res.json(path);
+      res.json(dbFile);
     } catch (e) {
       console.log(e);
       return res.status(500).json({ message: 'Upload error' });
@@ -181,10 +181,10 @@ class FileController {
   async uploadAvatar(req, res) {
     try {
       const file = req.files.file;
-
       const user = await User.findOne({ _id: req.user.id });
       const avatarName = Uuid.v4() + '.jpg';
-      file.mv(path.resolve(req.filePath, 'static', avatarName));
+      console.log(req.filePath);
+      file.mv(req.filePath + '\\' + 'static' + '\\' + avatarName);
       user.avatar = avatarName;
       await user.save();
       res.json(user);
@@ -197,7 +197,7 @@ class FileController {
     try {
       const user = await User.findOne({ _id: req.user.id });
       const file = fs.unlinkSync(
-        path.resolve(req.filePath, 'static', user.avatar),
+        req.filePath + '\\' + 'static' + '\\' + user.avatar,
       );
       user.avatar = null;
       await user.save();
