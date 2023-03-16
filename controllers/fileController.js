@@ -1,9 +1,10 @@
+const path = require('path');
+const fs = require('fs');
+const Uuid = require('uuid');
+
 const User = require('../models/User');
 const File = require('../models/File');
 const fileService = require('../services/fileService');
-
-const fs = require('fs');
-const Uuid = require('uuid');
 
 class FileController {
   async createDir(req, res) {
@@ -183,10 +184,10 @@ class FileController {
 
       const user = await User.findOne({ _id: req.user.id });
       const avatarName = Uuid.v4() + '.jpg';
-      file.mv(req.filePath + '/static/' + avatarName);
+      file.mv(path.resolve(req.filePath, 'static', avatarName));
       user.avatar = avatarName;
       await user.save();
-      res.json(req.filePath + '/static/' + avatarName);
+      res.json(user);
     } catch (e) {
       console.log(e);
       return res.status(500).json({ message: 'Upload avatar error' });
@@ -195,7 +196,9 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findOne({ _id: req.user.id });
-      const file = fs.unlinkSync(req.filePath + '/static/' + user.avatar);
+      const file = fs.unlinkSync(
+        path.resolve(req.filePath, 'static', user.avatar),
+      );
       user.avatar = null;
       await user.save();
       res.json(user);
