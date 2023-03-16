@@ -30,8 +30,6 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
-      3;
-      console.log(user);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -60,7 +58,6 @@ class AuthController {
   async authUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.user.id });
-      console.log(user);
       const token = jwt.sign({ id: user.id }, process.env.secretKey, {
         expiresIn: '1h',
       });

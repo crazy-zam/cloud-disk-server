@@ -10,12 +10,11 @@ const filePathMiddleware = require('./middleware/filePath.middleware');
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
-process.env.PWD = process.cwd();
 
 app.use(fileUpload({ defCharset: 'utf8', defParamCharset: 'utf8' }));
 app.use(cors());
-app.use(filePathMiddleware(path.resolve(process.env.PWD)));
-app.use(express.static(path.resolve(process.env.PWD, 'static')));
+app.use(filePathMiddleware(path.resolve(__dirname)));
+app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', authRouter);

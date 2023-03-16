@@ -69,20 +69,16 @@ class FileController {
       if (user.usedSpace + file.size > user.diskSpace) {
         return res.status(400).json({ message: 'There no space on the disk' });
       }
-
       user.usedSpace = user.usedSpace + file.size;
-
       let path;
       if (parent) {
         path = `${req.filePath}\\files\\${user._id}\\${parent.path}\\${file.name}`;
       } else {
         path = `${req.filePath}\\files\\${user._id}\\${file.name}`;
       }
-
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: 'File already exist' });
       }
-
       file.mv(path);
       const type = file.name.split('.').pop();
       let filePath = file.name;
@@ -183,14 +179,13 @@ class FileController {
       const file = req.files.file;
       const user = await User.findOne({ _id: req.user.id });
       const avatarName = Uuid.v4() + '.jpg';
-      console.log(req.filePath);
       file.mv(req.filePath + '\\' + 'static' + '\\' + avatarName);
       user.avatar = avatarName;
       await user.save();
       res.json(user);
     } catch (e) {
       console.log(e);
-      return res.status(500).json({ message: 'Upload avatar error' });
+      return res.status(500).json({ message: `Upload avatar error: ${e}` });
     }
   }
   async deleteAvatar(req, res) {
@@ -204,7 +199,7 @@ class FileController {
       res.json(user);
     } catch (e) {
       console.log(e);
-      return res.status(500).json({ message: 'Delete avatar error' });
+      return res.status(500).json({ message: `Delete avatar error: ${e}` });
     }
   }
 }
