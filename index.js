@@ -14,7 +14,7 @@ dotenv.config();
 app.use(fileUpload({ defCharset: 'utf8', defParamCharset: 'utf8' }));
 app.use(cors());
 app.use(filePathMiddleware(path.resolve(__dirname)));
-app.use(express.static(`${__dirname}/static`));
+app.use(express.static(path.resolve(__dirname, 'static')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', authRouter);
