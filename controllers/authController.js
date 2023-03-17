@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const path = require('path');
 const User = require('../models/User.js');
 const fileService = require('../services/fileService');
 const File = require('../models/File');
@@ -80,7 +81,7 @@ class AuthController {
     try {
       await User.deleteOne({ _id: req.user.id });
       await File.deleteMany({ user: req.user.id });
-      fs.rmSync(req.filePath + '//files//' + req.user.id, {
+      fs.rmSync(req.filePath + path.sep + 'files' + path.sep + req.user.id, {
         recursive: true,
       });
       res.status(200).json({ message: 'User was deleted' });
