@@ -175,12 +175,10 @@ class FileController {
     }
   }
   async uploadAvatar(req, res) {
-    console.log('object');
     try {
       const file = req.files.file;
       const user = await User.findOne({ _id: req.user.id });
       const avatarName = Uuid.v4() + '.jpg';
-      console.log(req.filePath + path.sep + 'static' + path.sep + avatarName);
       file.mv(req.filePath + path.sep + 'static' + path.sep + avatarName);
       user.avatar = avatarName;
       await user.save();
