@@ -16,7 +16,7 @@ class FileController {
         file.path = name;
         await fileService.createDir(req, file);
       } else {
-        file.path = `${parentFile.path}\\${file.name}`;
+        file.path = `${parentFile.path}${path.sep}${file.name}`;
         await fileService.createDir(req, file);
         parentFile.childs.push(file._id);
         await parentFile.save();
@@ -72,9 +72,9 @@ class FileController {
       user.usedSpace = user.usedSpace + file.size;
       let path;
       if (parent) {
-        path = `${req.filePath}\\files\\${user._id}\\${parent.path}\\${file.name}`;
+        path = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${parent.path}${path.sep}${file.name}`;
       } else {
-        path = `${req.filePath}\\files\\${user._id}\\${file.name}`;
+        path = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${file.name}`;
       }
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: 'File already exist' });
@@ -83,7 +83,7 @@ class FileController {
       const type = file.name.split('.').pop();
       let filePath = file.name;
       if (parent) {
-        filePath = parent.path + '\\' + file.name;
+        filePath = parent.path + path.sep + file.name;
       }
       const dbFile = new File({
         name: file.name,
@@ -175,11 +175,13 @@ class FileController {
     }
   }
   async uploadAvatar(req, res) {
+    console.log('object');
     try {
       const file = req.files.file;
       const user = await User.findOne({ _id: req.user.id });
       const avatarName = Uuid.v4() + '.jpg';
-      file.mv(req.filePath + '\\' + 'static' + '\\' + avatarName);
+      console.log(req.filePath + path.sep + 'static' + path.sep + avatarName);
+      file.mv(req.filePath + path.sep + 'static' + path.sep + avatarName);
       user.avatar = avatarName;
       await user.save();
       res.json(user);
@@ -192,7 +194,7 @@ class FileController {
     try {
       const user = await User.findOne({ _id: req.user.id });
       const file = fs.unlinkSync(
-        req.filePath + '\\' + 'static' + '\\' + user.avatar,
+        req.filePath + path.sep + 'static' + path.sep + user.avatar,
       );
       user.avatar = null;
       await user.save();

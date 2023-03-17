@@ -21,7 +21,15 @@ class FileService {
     fs.rmSync(path, { recursive: true });
   }
   getPath(req, file) {
-    return req.filePath + '\\files\\' + file.user + '\\' + file.path;
+    return (
+      req.filePath +
+      path.sep +
+      'files' +
+      path.sep +
+      file.user +
+      path.sep +
+      file.path
+    );
   }
 }
 

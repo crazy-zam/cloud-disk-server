@@ -2,6 +2,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 const authRouter = require('./routes/auth.routes.js');
 const fileRouter = require('./routes/file.routes.js');
 const cors = require('cors');
@@ -10,6 +11,13 @@ const filePathMiddleware = require('./middleware/filePath.middleware');
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
+
+if (!fs.existsSync(path.resolve(__dirname, 'static'))) {
+  fs.mkdirSync(path.resolve(__dirname, 'static'));
+}
+if (!fs.existsSync(path.resolve(__dirname, 'files'))) {
+  fs.mkdirSync(path.resolve(__dirname, 'files'));
+}
 
 app.use(fileUpload({ defCharset: 'utf8', defParamCharset: 'utf8' }));
 app.use(cors());
