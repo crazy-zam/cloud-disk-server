@@ -39,7 +39,7 @@ class AuthController {
         return res.status(400).json({ message: 'Wrong password' });
       }
       const token = jwt.sign({ id: user.id }, process.env.secretKey, {
-        expiresIn: '1h',
+        expiresIn: '24h',
       });
       return res.json({
         token,
@@ -60,7 +60,7 @@ class AuthController {
     try {
       const user = await User.findOne({ _id: req.user.id });
       const token = jwt.sign({ id: user.id }, process.env.secretKey, {
-        expiresIn: '1h',
+        expiresIn: '24h',
       });
       return res.json({
         token,

@@ -70,16 +70,16 @@ class FileController {
         return res.status(400).json({ message: 'There no space on the disk' });
       }
       user.usedSpace = user.usedSpace + file.size;
-      let path;
+      let currentPath;
       if (parent) {
-        path = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${parent.path}${path.sep}${file.name}`;
+        currentPath = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${parent.path}${path.sep}${file.name}`;
       } else {
-        path = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${file.name}`;
+        currentPath = `${req.filePath}${path.sep}files${path.sep}${user._id}${path.sep}${file.name}`;
       }
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: 'File already exist' });
       }
-      file.mv(path);
+      file.mv(currentPath);
       const type = file.name.split('.').pop();
       let filePath = file.name;
       if (parent) {
